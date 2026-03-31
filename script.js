@@ -1,10 +1,30 @@
-function createUser() {
+async function createUser() {
   const name = document.getElementById("name").value;
   const role = document.getElementById("role").value;
+  const email = document.getElementById("email").value;
+  const response = await fetch("https://localhost:3000/user",{
+    method: "POST",
+    header: {
+        "Content-Type":"application/json"
+    },
+    body: JSON.stringify({name,role,email})
+  });
 
-  console.log("User:", name, role);
+  const data = await response.json();
+  console.log(data);
+
 }
 
-function getUsers() {
-  console.log("Fetching users...");
+async function getUsers() {
+  const response = await fetch("https://localhost:3000/users");
+  const users = await response.json();
+
+  const list = document.getElementById("userlist");
+  list.innerHTML = "";
+
+  users.forEach(user => {
+    const li=document.createElement("li");
+    li.textContent = '${user.name} - ${user.role} - ${user.email}';
+    list.appendChild(li);
+  });
 }
