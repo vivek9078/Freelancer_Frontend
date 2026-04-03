@@ -1,27 +1,286 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Freelancer Hub</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkHub Pro | Project Management Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', -apple-system, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            max-width: 550px;
+            margin: 2rem auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 1.2rem;
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .role-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.7rem 1.8rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .btn-outline {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 1.2rem;
+            font-size: 0.85rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #2d3748;
+            font-size: 0.85rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.8rem;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card, .freelancer-card, .submission-card {
+            background: #f7fafc;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            margin-bottom: 1rem;
+        }
+
+        .project-card:hover, .freelancer-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 50px;
+            height: 8px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #48bb78, #38a169);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-available { background: #bee3f8; color: #2c5282; }
+        .badge-pending { background: #fefcbf; color: #975a16; }
+        .badge-hired { background: #c6f6d5; color: #22543d; }
+        .badge-approved { background: #c6f6d5; color: #22543d; }
+        .badge-rejected { background: #fed7d7; color: #9b2c2c; }
+
+        .freelancer-profile {
+            background: linear-gradient(135deg, #fef5e7, #fff);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            border: 1px solid #fbd38d;
+        }
+
+        .profile-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            padding: 0.4rem 1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .message {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .message-warning {
+            background: #fefcbf;
+            border-left-color: #ed8936;
+        }
+
+        .revision-btn {
+            background: #ed8936;
+            color: white;
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .revision-btn:hover {
+            background: #dd6b20;
+        }
+
+        .feedback-note {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-
-  <h1>Freelancer Hub</h1>
-
-  <h2>Create User</h2>
-  <input type="text" id="name" placeholder="Enter name">
-  <br>
-  <input type="text" id="role" placeholder="Enter role">
-  <br>
-  <input type="email" id="email" required>
-  <br>     
-  <button onclick="createUser()">Submit</button>
-
-  <h2>Users</h2>
-  <button onclick="getUsers()">Load Users</button>
-
-  <ul id="userList"></ul>
-
-  <script src="script.js"></script>
+    <div id="app"></div>
+    <script src="app.js"></script>
 </body>
 </html>
