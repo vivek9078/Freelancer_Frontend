@@ -92,7 +92,7 @@
         let updated = false;
         
         tasks = tasks.map(task => {
-            if (task.projectId === projectId && task.assignedTo === freelancerEmail) {
+            if (task.projectId === projectId && task.assignedTo === freelancerEmail && task.status !== "completed") {
                 updated = true;
                 return {
                     ...task,
