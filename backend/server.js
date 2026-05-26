@@ -21,7 +21,9 @@ const submissionRoutes = require("./routes/submissionRoutes");
 const app = express();
 
 // ---- Middleware ----
-app.use(cors()); // Allow frontend (different port) to talk to backend
+app.use(cors({
+    origin: "*"
+})); // Allow frontend (different port) to talk to backend
 app.use(express.json()); // Parse incoming JSON request bodies
 
 // ---- Connect to MongoDB ----
