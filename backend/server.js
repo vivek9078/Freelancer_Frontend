@@ -1,48 +1,47 @@
+// ============================================================
+// server.js — Entry Point of the Backend
+// This is the FIRST file that runs when you start the server.
+// It sets up Express, connects to MongoDB, and registers all routes.
+// ============================================================
+
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config(); // Load .env variables (like MONGO_URI, JWT_SECRET)
 
+const connectDB = require("./config/db");
+
+// Import all route files
+const authRoutes = require("./routes/authRoutes");
+const projectRoutes = require("./routes/projectRoutes");
+const invitationRoutes = require("./routes/invitationRoutes");
+const taskRoutes = require("./routes/taskRoutes");
+const submissionRoutes = require("./routes/submissionRoutes");
+
+// Create the Express app
 const app = express();
-const PORT = 3000;
 
-app.use(cors());
-app.use(express.json());
+// ---- Middleware ----
+app.use(cors()); // Allow frontend (different port) to talk to backend
+app.use(express.json()); // Parse incoming JSON request bodies
 
-mongoose.connect("mongodb+srv://vivek1907004_db_user:uGYJipFbVvRK0WXQ@cluster0.fyw3khl.mongodb.net/?appName=Cluster0")
-.then(() => console.log("MongoDB connected"))
-.catch(err => console.log(err));
+// ---- Connect to MongoDB ----
+connectDB();
 
-const userSchema = new mongoose.Schema({
+// ---- Register Routes ----
+// Every route in authRoutes will be prefixed with /api/auth
+app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes);
+app.use("/api/invitations", invitationRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/submissions", submissionRoutes);
 
-    name: String,
-    role: String,
-    email: String
+// ---- Default Route (Health Check) ----
+app.get("/", (req, res) => {
+    res.json({ message: "WorkHub Pro API is running!" });
 });
 
-const User = mongoose.model("User",userSchema);
-
-app.post("/user",async (req,res) => {
-    try{
-        const newUser = new User(req.body);
-        await newUser.save();
-
-        res.json({message: "User Saved Successfully"});
-    }
-    catch(err){
-        res.status(500).json({error: err.message});
-    }
-});
-
-app.get("/users",async (req,res) => {
-    try{
-        const users = await User.find();
-        res.json(users);
-    }
-    catch (err){
-        res.status(500).json({error: err.message});
-    }
-});
-
+// ---- Start Server ----
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
