@@ -1,6 +1,6 @@
 (function() {
 
-    const API_BASE = "http://localhost:5000/api";
+    const API_BASE = "https://freelancer-project-z7j4.onrender.com";
     // ========== STORAGE KEYS ==========
     const STORAGE_USERS = "workhub_users_final";
     const STORAGE_PROJECTS = "workhub_projects_final";
